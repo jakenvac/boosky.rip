@@ -72,7 +72,7 @@ function getMessage(): string {
 	const hUTC = Date.UTC(nextHalloweenYear, 9, 31);
 
 	const diff = hUTC - tUTC;
-	const daysToGo = Math.floor(diff / (1000 * 60 * 60 * 24));
+	const daysToGo = Math.floor(diff / (1000 * 60 * 60 * 24)) - 1;
 	const daysToGoMsg = daysToGo > 1 ? `${daysToGo} days` : `${daysToGo} day`;
 
 	return getRandom(countDownMessages).replace("{{time}}", daysToGoMsg);
