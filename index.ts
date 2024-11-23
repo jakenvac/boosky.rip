@@ -60,7 +60,7 @@ function getRandom(messages: string[]): string {
 
 function getMessage(): string {
 	const today = new Date();
-	const isHalloween = today.getMonth() === 9 && today.getDay() === 31;
+	const isHalloween = today.getMonth() === 9 && today.getDate() === 31;
 	if (isHalloween) return getRandom(halloweenDayMessages);
 
 	const isAfterHalloween = today.getMonth() > 9;
