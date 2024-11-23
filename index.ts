@@ -1,7 +1,34 @@
-import { AtpAgent } from "@atproto/api";
+import { AppBskyRichtextFacet, AtpAgent } from "@atproto/api";
 import dotenv from "dotenv";
 
 dotenv.config();
+
+function findBytePositions(
+	input: string,
+	searchText: string,
+): { byteStart: number; byteEnd: number } | null {
+	// Convert the string to UTF-8 bytes
+	const encoder = new TextEncoder();
+	const inputBytes = encoder.encode(input);
+	const searchBytes = encoder.encode(searchText);
+
+	// Find the search text within the input
+	for (let i = 0; i <= inputBytes.length - searchBytes.length; i++) {
+		if (
+			inputBytes
+				.slice(i, i + searchBytes.length)
+				.every((byte, index) => byte === searchBytes[index])
+		) {
+			return {
+				byteStart: i,
+				byteEnd: i + searchBytes.length,
+			};
+		}
+	}
+
+	// Return null if text not found
+	return null;
+}
 
 const countDownMessages = [
 	"{{time}} until #Halloween. Where the veil between worlds grows thin... 👻🎃",
@@ -90,8 +117,29 @@ try {
 	console.log("Something went wrong!!!", error);
 }
 
+const hashtagBytes = findBytePositions(message, "#Halloween");
+
+const facets: AppBskyRichtextFacet.Main[] | undefined =
+	hashtagBytes === null
+		? undefined
+		: [
+				{
+					index: {
+						byteStart: hashtagBytes.byteStart,
+						byteEnd: hashtagBytes.byteEnd,
+					},
+					features: [
+						{
+							$type: "app.bsky.richtext.facet#tag",
+							tag: "Halloween",
+						},
+					],
+				},
+			];
+
 console.log(`Posting message: ${message}`);
 
 await agent.post({
 	text: message,
+	facets: facets,
 });
