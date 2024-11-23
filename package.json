@@ -1,0 +1,15 @@
+{
+  "name": "boosky.rip",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "dotenv": "^16.4.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@atproto/api": "^0.13.17"
+  }
+}
