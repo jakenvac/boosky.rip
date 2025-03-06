@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: entepotenz/keep-github-actions-alive-min-dependencies@v1      
       - uses: oven-sh/setup-bun@v2
       - run: bun i
       - name: "execute script"
